@@ -1,4 +1,6 @@
+# Pile locale : les identifiants viennent du fichier .env (voir .env.example)
 services:
+  # Entrepôt de données relationnel (modèle en étoile)
   postgres:
     image: postgres:16
     container_name: mobilite-postgres
@@ -10,6 +12,7 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    # Vérifie que Postgres accepte les connexions ($$ = variable lue dans le conteneur)
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
       interval: 10s
@@ -17,6 +20,7 @@ services:
       retries: 5
     restart: unless-stopped
 
+  # Stockage des données brutes en JSON (réponses d'API)
   mongo:
     image: mongo:7
     container_name: mobilite-mongo
@@ -29,6 +33,7 @@ services:
       - mongo_data:/data/db
     restart: unless-stopped
 
+  # Stockage objet compatible S3 (fichiers bruts, ex. GTFS) ; console web sur :9001
   minio:
     image: minio/minio
     container_name: mobilite-minio
@@ -37,12 +42,13 @@ services:
       MINIO_ROOT_USER: ${MINIO_ROOT_USER}
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
     ports:
-      - "9000:9000"
-      - "9001:9001"
+      - "9000:9000" # API S3
+      - "9001:9001" # Console web
     volumes:
       - minio_data:/data
     restart: unless-stopped
 
+# Volumes nommés : les données survivent à "docker compose down" (pas à "down -v")
 volumes:
   postgres_data:
   mongo_data:
