@@ -23,10 +23,3 @@ docker compose up -d
 # Arrêter
 docker compose down
 ```
-
-## À faire
-
-- [ ] Ingestion des données
-- [ ] Modèle en étoile
-- [ ] Requêtes SQL
-- [ ] README final
