@@ -6,7 +6,7 @@ Plateforme de données sur la mobilité à Bordeaux, réunissant les horaires de
 
 - **postgres** (PostgreSQL 16) : entrepôt de données, port `5432`, base `mobilite`
 - **mongo** (MongoDB 7) : stockage des données brutes semi-structurées, port `27017`
-- **minio** (MinIO) : stockage objet compatible S3, API sur le port `9000`, console sur le port `9001`
+- **rustfs** (RustFS) : stockage objet compatible S3, API sur le port `9000`, console sur le port `9001`
 
 Les identifiants sont lus depuis le fichier `.env` (à créer à partir de `.env.example`) :
 

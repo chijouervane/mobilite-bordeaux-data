@@ -34,22 +34,22 @@ services:
     restart: unless-stopped
 
   # Stockage objet compatible S3 (fichiers bruts, ex. GTFS) ; console web sur :9001
-  minio:
-    image: minio/minio
-    container_name: mobilite-minio
-    command: server /data --console-address :9001
+  rustfs:
+    image: rustfs/rustfs:latest
+    container_name: mobilite-rustfs
+    command: /data
     environment:
-      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
-      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+      RUSTFS_ACCESS_KEY: ${RUSTFS_ACCESS_KEY}
+      RUSTFS_SECRET_KEY: ${RUSTFS_SECRET_KEY}
     ports:
       - "9000:9000" # API S3
       - "9001:9001" # Console web
     volumes:
-      - minio_data:/data
+      - rustfs_data:/data
     restart: unless-stopped
 
 # Volumes nommés : les données survivent à "docker compose down" (pas à "down -v")
 volumes:
   postgres_data:
   mongo_data:
-  minio_data:
+  rustfs_data:
